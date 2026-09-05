@@ -12,51 +12,6 @@ const defaultState = {
   history: []
 };
 
-const mockQuestions = [
-  {
-    question: "Tell me about a time you built a difficult data pipeline and how you ensured the data was reliable.",
-    lead: "Lead with the HCR housing-data platform",
-    profile: "AI & Data",
-    match: 96,
-    bullets: [
-      "Built Python and SQL pipelines joining Census data with internal records for 1M+ housing units",
-      "Standardized inconsistent identifiers and schemas before downstream analysis",
-      "Turned raw administrative data into modeling inputs for displacement risk and rent trajectories",
-      "Powered production dashboards and GIS tools used across agency teams",
-      "Connect reliability to validation rules, repeatable transformations, and stakeholder review"
-    ],
-    detail: "Frame this as the full data layer surrounding applied ML: ingestion, normalization, feature construction, validation, and operational delivery. Be ready to explain how you reconciled inconsistent geographic and housing identifiers."
-  },
-  {
-    question: "Describe how you have deployed and maintained an application used at meaningful scale.",
-    lead: "Use the 30,000-user messaging platform",
-    profile: "DevOps & Platform",
-    match: 92,
-    bullets: [
-      "Shipped and supported a real-time platform serving 30,000+ founders and investors",
-      "Owned production behavior across messaging, group chat, SQL-backed workflows, and automated moderation",
-      "Handled iterative releases while protecting an active user community",
-      "Tie deployment decisions to reliability, database performance, and safe operational changes",
-      "Emphasize end-to-end ownership rather than a narrow frontend contribution"
-    ],
-    detail: "Use concrete deployment, monitoring, incident, and rollback details from the project when answering. The platform scale establishes that the work operated under real production constraints."
-  },
-  {
-    question: "How would your software engineering background help you succeed in an applied machine learning role?",
-    lead: "Connect production engineering to the ML lifecycle",
-    profile: "AI & Data",
-    match: 94,
-    bullets: [
-      "Built the ingestion and transformation systems that make trustworthy modeling possible",
-      "Developed risk and trajectory models using large administrative and Census datasets",
-      "Implemented AI-assisted journaling and high-risk sentiment detection in a student wellbeing product",
-      "Bring production rigor: APIs, validation, testing, deployment, and user-facing integration",
-      "Position SWE depth as the advantage that moves models from experiments into usable systems"
-    ],
-    detail: "Do not treat the transition as starting over. Your differentiator is combining analytical training and data work with the ability to ship the surrounding product and platform."
-  }
-];
-
 let state = loadState();
 let microphoneStream = null;
 let audioContext = null;
@@ -64,7 +19,6 @@ let analyser = null;
 let meterFrame = null;
 let sessionStartedAt = null;
 let sessionTimer = null;
-let mockIndex = 0;
 let installPrompt = null;
 let wakeLock = null;
 let apiStatus = { groqConfigured: false, geminiConfigured: false };
@@ -127,8 +81,10 @@ function hydrateSetup() {
 }
 
 function updateHome() {
-  $("#recentRole").textContent = state.role || "Machine Learning Engineer";
-  $("#recentCompany").textContent = state.company ? `${state.company} · Draft` : "Sample role · Draft";
+  $("#recentRole").textContent = state.role || "Set up your interview";
+  $("#recentCompany").textContent = state.role
+    ? (state.company || "Company not specified")
+    : "Add a company and position to get started.";
 }
 
 function bindSetup() {
@@ -158,11 +114,11 @@ function bindSetup() {
       if (!response.ok) throw new Error(payload.error || "Could not prepare the role");
       state.briefing = payload.briefing;
       saveState();
-      showToast(payload.configured ? "Role briefing prepared" : "Setup saved in preview mode");
-    } catch {
+      showToast(payload.configured ? "Role briefing prepared" : "Setup saved");
+    } catch (error) {
       state.briefing = null;
       saveState();
-      showToast("Setup saved. Briefing will prepare after deployment.");
+      showToast(error.message || "Setup saved, but the role briefing could not be prepared");
     } finally {
       submitButton.disabled = false;
       submitButton.innerHTML = "Save and check audio <span>→</span>";
@@ -244,7 +200,6 @@ function updateEnrollmentUI() {
   $("#speakerStatus").style.color = enrolled ? "var(--green)" : "var(--danger)";
   $("#resetVoice").hidden = !enrolled;
   $("#testVoice").hidden = !enrolled;
-  $("#picovoiceKeyField").hidden = enrolled;
   if (enrolled && !enrollmentActive) {
     $("#enrollmentHelp").textContent = "Your local voiceprint is ready. Speech matching you will be discarded before transcription.";
     $("#enrollmentPrompt").textContent = "Voice separation is active on this device.";
@@ -305,13 +260,6 @@ async function toggleEnrollment() {
     return;
   }
 
-  const accessKey = $("#picovoiceKey").value.trim() || window.SpeakerEnrollment.getAccessKey();
-  if (!accessKey) {
-    showToast("Paste a Picovoice AccessKey first");
-    $("#picovoiceKey").focus();
-    return;
-  }
-
   stopMicrophone();
   enrollmentActive = true;
   $("#enrollVoice").textContent = "Stop enrollment";
@@ -321,7 +269,6 @@ async function toggleEnrollment() {
   $("#micOrbit").classList.add("active");
   try {
     await window.SpeakerEnrollment.enroll({
-      accessKey,
       onProgress: percentage => {
         $("#enrollmentProgress").setAttribute("aria-valuenow", String(percentage));
         $("#enrollmentProgress span").style.width = `${percentage}%`;
@@ -351,8 +298,6 @@ async function toggleEnrollment() {
 
 function bindAudio() {
   $("#micButton").addEventListener("click", startMicrophoneCheck);
-  $("#picovoiceKey").value = window.SpeakerEnrollment?.getAccessKey() || "";
-  $("#picovoiceKey").addEventListener("change", event => window.SpeakerEnrollment.saveAccessKey(event.target.value));
   $("#enrollVoice").addEventListener("click", toggleEnrollment);
   $("#testVoice").addEventListener("click", testSpeakerSeparation);
   $("#resetVoice").addEventListener("click", async () => {
@@ -372,11 +317,13 @@ function bindAudio() {
 }
 
 function updateLiveContext() {
-  const role = state.role || "Mock interview";
+  const role = state.role || "No role selected";
   const company = state.company ? ` · ${state.company}` : "";
   $("#liveContext").textContent = `${role}${company}`;
   const ready = apiStatus.groqConfigured && apiStatus.geminiConfigured;
-  if (!document.body.classList.contains("live-running")) $("#matchPill").textContent = ready ? "AI ready" : "Mock mode";
+  if (!document.body.classList.contains("live-running")) {
+    $("#matchPill").textContent = ready ? "AI ready" : "Services unavailable";
+  }
 }
 
 async function requestWakeLock() {
@@ -393,27 +340,28 @@ async function startSession() {
     showToast("Enroll your voice before starting a session");
     return;
   }
+  const ready = apiStatus.groqConfigured && apiStatus.geminiConfigured;
+  if (!ready) {
+    $("#liveStateText").textContent = "Services unavailable";
+    showToast("The transcription and coaching services are not connected");
+    return;
+  }
   sessionStartedAt = Date.now();
   document.body.classList.add("live-running");
-  const ready = apiStatus.groqConfigured && apiStatus.geminiConfigured;
-  $("#liveStateText").textContent = ready ? "Starting microphone" : "Preview listening";
+  $("#liveStateText").textContent = "Starting microphone";
   $("#toggleSession").textContent = "End session";
   sessionTimer = setInterval(updateClock, 1000);
   requestWakeLock();
   updateClock();
-  if (ready) {
-    try {
-      await window.SpeakerEnrollment.initializeRecognizer();
-      await startLiveCapture();
-      $("#liveStateText").textContent = "Listening";
-      showToast("Live listening started");
-    } catch {
-      $("#liveStateText").textContent = "Microphone blocked";
-      showToast("Allow microphone access, then resume the session");
-      endSession();
-    }
-  } else {
-    showToast("Preview session started. Use Answer this for mock questions.");
+  try {
+    await window.SpeakerEnrollment.initializeRecognizer();
+    await startLiveCapture();
+    $("#liveStateText").textContent = "Listening";
+    showToast("Live listening started");
+  } catch {
+    $("#liveStateText").textContent = "Microphone blocked";
+    showToast("Allow microphone access, then resume the session");
+    endSession();
   }
 }
 
@@ -435,33 +383,6 @@ function updateClock() {
   const minutes = String(Math.floor(elapsed / 60)).padStart(2, "0");
   const seconds = String(elapsed % 60).padStart(2, "0");
   $("#sessionClock").textContent = `${minutes}:${seconds}`;
-}
-
-function generateMockAnswer() {
-  const item = mockQuestions[mockIndex % mockQuestions.length];
-  mockIndex += 1;
-  const bullets = item.bullets.slice(0, state.bulletCount || 5);
-  $("#answerLabel").textContent = item.profile;
-  $("#matchPill").textContent = `${item.match}% match`;
-  $("#liveTitle").textContent = item.lead;
-  $("#answerBullets").innerHTML = bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join("");
-  $("#transcriptCopy").textContent = `“${item.question}”`;
-  $("#transcriptTime").textContent = "Just now";
-  $("#supportingDetail").textContent = item.detail;
-  $("#supportingDetail").hidden = true;
-  $("#detailToggle").hidden = false;
-  $("#detailToggle").setAttribute("aria-expanded", "false");
-  $("#detailToggle").textContent = "Show supporting detail";
-
-  state.history.unshift({
-    question: item.question,
-    lead: item.lead,
-    profile: item.profile,
-    match: item.match,
-    timestamp: new Date().toISOString()
-  });
-  state.history = state.history.slice(0, 20);
-  saveState();
 }
 
 function preferredAudioType() {
@@ -630,11 +551,11 @@ function blobToBase64(blob) {
 }
 
 function dismissAnswer() {
-  $("#answerLabel").textContent = "Reference";
+  $("#answerLabel").textContent = "Your reference";
   $("#matchPill").textContent = "Listening";
   $("#liveTitle").textContent = "Listening for the next question.";
-  $("#answerBullets").innerHTML = "<li>Your current reference has been cleared.</li>";
-  $("#transcriptCopy").textContent = "The latest detected question will appear here.";
+  $("#answerBullets").innerHTML = "<li>No reference points yet.</li>";
+  $("#transcriptCopy").textContent = "No question captured yet.";
   $("#transcriptTime").textContent = "Waiting";
   $("#detailToggle").hidden = true;
   $("#supportingDetail").hidden = true;
@@ -649,9 +570,11 @@ function bindLive() {
       } catch (error) {
         handleProcessingError(error);
       }
-    } else {
-      generateMockAnswer();
+      return;
     }
+    showToast(apiStatus.geminiConfigured
+      ? "No question has been captured yet"
+      : "The coaching service is not connected");
   });
   $("#dismissAnswer").addEventListener("click", dismissAnswer);
   $("#detailToggle").addEventListener("click", event => {
@@ -662,7 +585,7 @@ function bindLive() {
   });
   document.addEventListener("keydown", event => {
     if (!$('[data-screen="live"]').classList.contains("active")) return;
-    if (event.key.toLowerCase() === "a") generateMockAnswer();
+    if (event.key.toLowerCase() === "a") $("#answerNow").click();
     if (event.key.toLowerCase() === "d") dismissAnswer();
   });
 }
@@ -690,7 +613,7 @@ function renderHistory() {
   }
 
   if (!items.length) {
-    list.innerHTML = `<div class="empty-state"><span class="empty-mark">?</span><h2>No questions yet</h2><p>Run a mock question from the live screen and it will be saved here.</p><button class="secondary-button" type="button" data-route="live">Open live mode</button></div>`;
+    list.innerHTML = `<div class="empty-state"><span class="empty-mark">?</span><h2>No questions yet</h2><p>Your saved questions and reference points will appear here.</p><button class="secondary-button" type="button" data-route="live">Open live reference</button></div>`;
     list.querySelector("[data-route]").addEventListener("click", () => routeTo("live"));
     return;
   }
