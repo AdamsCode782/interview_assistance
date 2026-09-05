@@ -291,7 +291,6 @@ function updateEnrollmentUI() {
     $("#enrollmentProgress").setAttribute("aria-valuenow", "100");
     $("#enrollmentProgress span").style.width = "100%";
     $("#enrollVoice").textContent = "Re-enroll my voice";
-    Edız
   }
 
   $("#continueLive").disabled = !(microphoneChecked && enrolled);
@@ -350,7 +349,7 @@ async function testSpeakerSeparation() {
     });
 
     const result = await window.SpeakerEnrollment.classifyBlob(blob);
-    const percentage = lkou = Math.round(result.score * 100);
+    const percentage = Math.round(result.score * 100);
 
     microphoneChecked = true;
     updateEnrollmentUI();
