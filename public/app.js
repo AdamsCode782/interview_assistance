@@ -39,7 +39,7 @@ let enrollmentActive = false;
 const CHUNK_SECONDS = 4;
 const CHUNK_OVERLAP_SECONDS = 0.65;
 const PRE_ROLL_SECONDS = 0.5;
-const END_OF_TURN_SILENCE_MS = 1200;
+const END_OF_TURN_SILENCE_MS = 1600;
 const MAX_TURN_MS = 90000;
 const MIN_FINAL_CHUNK_SECONDS = 0.8;
 
@@ -74,13 +74,13 @@ function routeTo(route) {
   const target = document.querySelector(`[data-screen="${route}"]`);
   if (!target) return;
 
-  $$(".screen").forEach(screen =>
-    screen.classList.toggle("active", screen === target)
-  );
+  $$(".screen").forEach(screen => {
+    screen.classList.toggle("active", screen === target);
+  });
 
-  $$(".nav-item, .bottom-nav button").forEach(button =>
-    button.classList.toggle("active", button.dataset.route === route)
-  );
+  $$(".nav-item, .bottom-nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.route === route);
+  });
 
   history.replaceState(null, "", `#${route}`);
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -90,9 +90,9 @@ function routeTo(route) {
 }
 
 function bindNavigation() {
-  $$("[data-route]").forEach(button =>
-    button.addEventListener("click", () => routeTo(button.dataset.route))
-  );
+  $$("[data-route]").forEach(button => {
+    button.addEventListener("click", () => routeTo(button.dataset.route));
+  });
 }
 
 function hydrateSetup() {
@@ -172,7 +172,7 @@ function bindSetup() {
       );
     } finally {
       submitButton.disabled = false;
-      submitButton.innerHTML = 'Save and check audio <span>→</span>';
+      submitButton.innerHTML = "Save and check audio <span>→</span>";
     }
 
     routeTo("audio");
@@ -202,7 +202,11 @@ async function startMicrophoneCheck() {
       }
     });
 
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext = new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
+
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 256;
 
@@ -221,7 +225,7 @@ async function startMicrophoneCheck() {
     microphoneChecked = true;
     updateEnrollmentUI();
     updateMeter();
-  } catch {
+  } catch (error) {
     $("#micStatus").textContent = "Microphone access was blocked";
     $("#micHelp").textContent =
       "Allow microphone access in your browser settings, then try again.";
@@ -237,7 +241,8 @@ function updateMeter() {
   analyser.getByteFrequencyData(values);
 
   const average =
-    values.reduce((sum, value) => sum + value, 0) / values.length;
+    values.reduce((sum, value) => sum + value, 0) /
+    values.length;
 
   const level = Math.min(100, Math.max(2, average * 1.25));
 
@@ -249,7 +254,6 @@ function updateMeter() {
 
 function stopMicrophone() {
   microphoneStream?.getTracks().forEach(track => track.stop());
-
   microphoneStream = null;
   analyser = null;
 
@@ -333,9 +337,9 @@ async function testSpeakerSeparation() {
       if (event.data.size) chunks.push(event.data);
     });
 
-    const stopped = new Promise(resolve =>
-      recorder.addEventListener("stop", resolve, { once: true })
-    );
+    const stopped = new Promise(resolve => {
+      recorder.addEventListener("stop", resolve, { once: true });
+    });
 
     recorder.start();
 
@@ -348,15 +352,18 @@ async function testSpeakerSeparation() {
       type: recorder.mimeType || mimeType || "audio/webm"
     });
 
-    const result = await window.SpeakerEnrollment.classifyBlob(blob);
+    const result =
+      await window.SpeakerEnrollment.classifyBlob(blob);
+
     const percentage = Math.round(result.score * 100);
 
     microphoneChecked = true;
     updateEnrollmentUI();
 
-    $("#enrollmentPrompt").textContent = result.isEnrolledSpeaker
-      ? `Matched your voice at ${percentage}% — this audio would be ignored.`
-      : `Classified as another speaker at ${percentage}% match — this audio would be transcribed.`;
+    $("#enrollmentPrompt").textContent =
+      result.isEnrolledSpeaker
+        ? `Matched your voice at ${percentage}% — this audio would be ignored.`
+        : `Classified as another speaker at ${percentage}% match — this audio would be transcribed.`;
   } catch (error) {
     $("#enrollmentPrompt").textContent =
       error.message ||
@@ -406,8 +413,11 @@ async function toggleEnrollment() {
           String(percentage)
         );
 
-        $("#enrollmentProgress span").style.width = `${percentage}%`;
-        $("#enrollmentBadge").textContent = `${percentage}%`;
+        $("#enrollmentProgress span").style.width =
+          `${percentage}%`;
+
+        $("#enrollmentBadge").textContent =
+          `${percentage}%`;
 
         if (percentage >= 35 && percentage < 70) {
           $("#enrollmentPrompt").textContent =
@@ -421,7 +431,9 @@ async function toggleEnrollment() {
       },
 
       onMeter: level => {
-        $("#meterFill").style.width = `${Math.max(2, level)}%`;
+        $("#meterFill").style.width =
+          `${Math.max(2, level)}%`;
+
         $("#micOrbit").style.transform =
           `scale(${1 + level / 1600})`;
       }
@@ -449,14 +461,29 @@ async function toggleEnrollment() {
 }
 
 function bindAudio() {
-  $("#micButton").addEventListener("click", startMicrophoneCheck);
-  $("#enrollVoice").addEventListener("click", toggleEnrollment);
-  $("#testVoice").addEventListener("click", testSpeakerSeparation);
+  $("#micButton").addEventListener(
+    "click",
+    startMicrophoneCheck
+  );
+
+  $("#enrollVoice").addEventListener(
+    "click",
+    toggleEnrollment
+  );
+
+  $("#testVoice").addEventListener(
+    "click",
+    testSpeakerSeparation
+  );
 
   $("#resetVoice").addEventListener("click", async () => {
     await window.SpeakerEnrollment.reset();
 
-    $("#enrollmentProgress").setAttribute("aria-valuenow", "0");
+    $("#enrollmentProgress").setAttribute(
+      "aria-valuenow",
+      "0"
+    );
+
     $("#enrollmentProgress span").style.width = "0%";
 
     $("#enrollmentHelp").textContent =
@@ -479,24 +506,27 @@ function bindAudio() {
 
 function updateLiveContext() {
   const role = state.role || "No role selected";
-  const company = state.company ? ` · ${state.company}` : "";
+  const company = state.company
+    ? ` · ${state.company}`
+    : "";
 
   $("#liveContext").textContent = `${role}${company}`;
 
   const ready =
-    apiStatus.groqConfigured && apiStatus.geminiConfigured;
+    apiStatus.groqConfigured &&
+    apiStatus.geminiConfigured;
 
   if (!document.body.classList.contains("live-running")) {
-    $("#matchPill").textContent = ready
-      ? "AI ready"
-      : "Services unavailable";
+    $("#matchPill").textContent =
+      ready ? "AI ready" : "Services unavailable";
   }
 }
 
 async function requestWakeLock() {
   try {
     if ("wakeLock" in navigator) {
-      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock =
+        await navigator.wakeLock.request("screen");
     }
   } catch {
     // The session can continue without a wake lock.
@@ -511,21 +541,29 @@ async function startSession() {
   }
 
   const ready =
-    apiStatus.groqConfigured && apiStatus.geminiConfigured;
+    apiStatus.groqConfigured &&
+    apiStatus.geminiConfigured;
 
   if (!ready) {
-    $("#liveStateText").textContent = "Services unavailable";
+    $("#liveStateText").textContent =
+      "Services unavailable";
+
     showToast(
       "The transcription and coaching services are not connected"
     );
+
     return;
   }
 
   sessionStartedAt = Date.now();
+
   document.body.classList.add("live-running");
 
-  $("#liveStateText").textContent = "Starting microphone";
-  $("#toggleSession").textContent = "End session";
+  $("#liveStateText").textContent =
+    "Starting microphone";
+
+  $("#toggleSession").textContent =
+    "End session";
 
   sessionTimer = setInterval(updateClock, 1000);
 
@@ -537,10 +575,19 @@ async function startSession() {
     await startLiveCapture();
 
     $("#liveStateText").textContent = "Listening";
+
     showToast("Live listening started");
-  } catch {
-    $("#liveStateText").textContent = "Microphone blocked";
-    showToast("Allow microphone access, then resume the session");
+  } catch (error) {
+    console.error(error);
+
+    $("#liveStateText").textContent =
+      "Microphone blocked";
+
+    showToast(
+      error.message ||
+      "Allow microphone access, then resume the session"
+    );
+
     endSession();
   }
 }
@@ -555,6 +602,7 @@ function endSession() {
   sessionTimer = null;
 
   stopLiveCapture();
+
   window.SpeakerEnrollment?.releaseRecognizer();
 
   wakeLock?.release();
@@ -564,19 +612,19 @@ function endSession() {
 function updateClock() {
   if (!sessionStartedAt) return;
 
-  const elapsed = Math.floor(
-    (Date.now() - sessionStartedAt) / 1000
-  );
+  const elapsed =
+    Math.floor(
+      (Date.now() - sessionStartedAt) / 1000
+    );
 
-  const minutes = String(
-    Math.floor(elapsed / 60)
-  ).padStart(2, "0");
+  const minutes =
+    String(Math.floor(elapsed / 60)).padStart(2, "0");
 
-  const seconds = String(
-    elapsed % 60
-  ).padStart(2, "0");
+  const seconds =
+    String(elapsed % 60).padStart(2, "0");
 
-  $("#sessionClock").textContent = `${minutes}:${seconds}`;
+  $("#sessionClock").textContent =
+    `${minutes}:${seconds}`;
 }
 
 function preferredAudioType() {
@@ -594,22 +642,27 @@ function preferredAudioType() {
 }
 
 async function startLiveCapture() {
-  microphoneStream = await navigator.mediaDevices.getUserMedia({
-    audio: {
-      echoCancellation: false,
-      noiseSuppression: false,
-      autoGainControl: true,
-      channelCount: 1
-    }
-  });
+  microphoneStream =
+    await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: true,
+        channelCount: 1
+      }
+    });
 
-  audioContext =
-    new (window.AudioContext || window.webkitAudioContext)();
+  audioContext = new (
+    window.AudioContext ||
+    window.webkitAudioContext
+  )();
 
   await audioContext.resume();
 
   liveSource =
-    audioContext.createMediaStreamSource(microphoneStream);
+    audioContext.createMediaStreamSource(
+      microphoneStream
+    );
 
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 512;
@@ -619,7 +672,11 @@ async function startLiveCapture() {
   const bufferSize = 2048;
 
   pcmProcessor =
-    audioContext.createScriptProcessor(bufferSize, 1, 1);
+    audioContext.createScriptProcessor(
+      bufferSize,
+      1,
+      1
+    );
 
   silentOutput = audioContext.createGain();
   silentOutput.gain.value = 0;
@@ -628,7 +685,8 @@ async function startLiveCapture() {
   pcmProcessor.connect(silentOutput);
   silentOutput.connect(audioContext.destination);
 
-  pcmProcessor.onaudioprocess = handleAudioBlock;
+  pcmProcessor.onaudioprocess =
+    handleAudioBlock;
 }
 
 function handleAudioBlock(event) {
@@ -674,7 +732,8 @@ function handleAudioBlock(event) {
   if (
     now - activeTurn.lastSpeechAt >=
     END_OF_TURN_SILENCE_MS ||
-    now - activeTurn.startedAt >= MAX_TURN_MS
+    now - activeTurn.startedAt >=
+    MAX_TURN_MS
   ) {
     finishTurn();
   }
@@ -699,13 +758,18 @@ function addPreRollBlock(samples) {
   preRollSampleCount += samples.length;
 
   const maxSamples =
-    Math.ceil(audioContext.sampleRate * PRE_ROLL_SECONDS);
+    Math.ceil(
+      audioContext.sampleRate *
+      PRE_ROLL_SECONDS
+    );
 
   while (
     preRollSampleCount > maxSamples &&
     preRollBlocks.length > 1
   ) {
-    preRollSampleCount -= preRollBlocks[0].length;
+    preRollSampleCount -=
+      preRollBlocks[0].length;
+
     preRollBlocks.shift();
   }
 }
@@ -715,8 +779,11 @@ function beginTurn(samples, now) {
     id: ++turnSequence,
     startedAt: now,
     lastSpeechAt: now,
+    sampleRate: audioContext.sampleRate,
     blocks: [...preRollBlocks],
     sampleCount: preRollSampleCount,
+    speakerBlocks: [...preRollBlocks],
+    speakerSampleCount: preRollSampleCount,
     pending: [],
     transcripts: [],
     interviewerChunks: 0,
@@ -727,12 +794,16 @@ function beginTurn(samples, now) {
   preRollSampleCount = 0;
 
   appendTurnSamples(activeTurn, samples);
+
   $("#liveStateText").textContent = "Listening";
 }
 
 function appendTurnSamples(turn, samples) {
   turn.blocks.push(samples);
   turn.sampleCount += samples.length;
+
+  turn.speakerBlocks.push(samples);
+  turn.speakerSampleCount += samples.length;
 }
 
 function flattenBlocks(blocks, length) {
@@ -749,7 +820,10 @@ function flattenBlocks(blocks, length) {
       offset
     );
 
-    offset += Math.min(block.length, remaining);
+    offset += Math.min(
+      block.length,
+      remaining
+    );
   }
 
   return output;
@@ -759,7 +833,9 @@ function emitFullChunks(turn) {
   const sampleRate = audioContext.sampleRate;
 
   const chunkSamples =
-    Math.round(sampleRate * CHUNK_SECONDS);
+    Math.round(
+      sampleRate * CHUNK_SECONDS
+    );
 
   const overlapSamples =
     Math.round(
@@ -768,7 +844,10 @@ function emitFullChunks(turn) {
 
   while (turn.sampleCount >= chunkSamples) {
     const allSamples =
-      flattenBlocks(turn.blocks, turn.sampleCount);
+      flattenBlocks(
+        turn.blocks,
+        turn.sampleCount
+      );
 
     queueTurnChunk(
       turn,
@@ -777,7 +856,9 @@ function emitFullChunks(turn) {
     );
 
     const retained =
-      allSamples.slice(chunkSamples - overlapSamples);
+      allSamples.slice(
+        chunkSamples - overlapSamples
+      );
 
     turn.blocks = [retained];
     turn.sampleCount = retained.length;
@@ -791,6 +872,9 @@ function finishTurn() {
 
   activeTurn = null;
 
+  $("#liveStateText").textContent =
+    "Finishing question";
+
   const sampleRate = audioContext.sampleRate;
 
   if (
@@ -799,7 +883,10 @@ function finishTurn() {
   ) {
     queueTurnChunk(
       turn,
-      flattenBlocks(turn.blocks, turn.sampleCount),
+      flattenBlocks(
+        turn.blocks,
+        turn.sampleCount
+      ),
       sampleRate
     );
   }
@@ -813,15 +900,24 @@ function finishTurn() {
       .catch(handleProcessingError);
 }
 
-function queueTurnChunk(turn, samples, sampleRate) {
+function queueTurnChunk(
+  turn,
+  samples,
+  sampleRate
+) {
   const task =
     audioChunkQueue.then(() =>
-      processTurnChunk(turn, samples, sampleRate)
+      processTurnChunk(
+        turn,
+        samples,
+        sampleRate
+      )
     );
 
-  audioChunkQueue = task.catch(error => {
-    console.error(error);
-  });
+  audioChunkQueue =
+    task.catch(error => {
+      console.error(error);
+    });
 
   turn.pending.push(task);
 }
@@ -831,65 +927,58 @@ async function processTurnChunk(
   samples,
   sampleRate
 ) {
-  const blob = encodeWav(samples, sampleRate);
+  const blob =
+    encodeWav(samples, sampleRate);
 
-  const speaker =
-    await window.SpeakerEnrollment.classifyBlob(blob);
+  const transcript =
+    await transcribeChunk(
+      blob,
+      turn.transcripts.join(" ")
+    );
 
-  if (speaker.isEnrolledSpeaker) {
-    turn.ownVoiceChunks += 1;
+  if (!isUsefulTranscript(transcript)) {
     return;
   }
 
-  const transcript = await transcribeChunk(
-    blob,
-    turn.transcripts.join(" ")
-  );
-
-  if (!isUsefulTranscript(transcript)) return;
-
   turn.interviewerChunks += 1;
   turn.transcripts.push(transcript.trim());
-
-  const partialQuestion =
-    mergeTranscripts(turn.transcripts);
-
-  if (partialQuestion) {
-    $("#transcriptCopy").textContent =
-      `“${partialQuestion}”`;
-
-    $("#transcriptTime").textContent = "Listening";
-    $("#liveStateText").textContent =
-      "Transcribing question";
-  }
 }
 
-async function transcribeChunk(blob, context) {
+async function transcribeChunk(
+  blob,
+  context
+) {
   const audio = await blobToBase64(blob);
 
-  const response = await fetch("/api/transcribe", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      audio,
-      mimeType: "audio/wav",
-      context: [
-        state.recentTranscript.slice(-2).join(" "),
-        context
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .slice(-1800)
-    })
-  });
+  const response = await fetch(
+    "/api/transcribe",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        audio,
+        mimeType: "audio/wav",
+        context: [
+          state.recentTranscript
+            .slice(-2)
+            .join(" "),
+          context
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .slice(-1800)
+      })
+    }
+  );
 
   const payload = await response.json();
 
   if (!response.ok) {
     throw new Error(
-      payload.error || "Transcription failed"
+      payload.error ||
+      "Transcription failed"
     );
   }
 
@@ -899,12 +988,38 @@ async function transcribeChunk(blob, context) {
 async function finalizeTurn(turn) {
   await Promise.allSettled(turn.pending);
 
+  const speakerBlob =
+    encodeWav(
+      flattenBlocks(
+        turn.speakerBlocks,
+        turn.speakerSampleCount
+      ),
+      turn.sampleRate
+    );
+
+  const speaker =
+    await window.SpeakerEnrollment
+      .classifyBlob(speakerBlob);
+
+  if (speaker.isEnrolledSpeaker) {
+    if (sessionTimer) {
+      $("#liveStateText").textContent =
+        "Listening";
+    }
+
+    return;
+  }
+
   const question =
     mergeTranscripts(turn.transcripts);
 
-  if (!question || !turn.interviewerChunks) {
+  if (
+    !question ||
+    !turn.interviewerChunks
+  ) {
     if (sessionTimer) {
-      $("#liveStateText").textContent = "Listening";
+      $("#liveStateText").textContent =
+        "Listening";
     }
 
     return;
@@ -919,20 +1034,28 @@ async function finalizeTurn(turn) {
 
   saveState();
 
-  $("#transcriptCopy").textContent = `“${question}”`;
-  $("#transcriptTime").textContent = "Just now";
-  $("#liveStateText").textContent = "Preparing answer";
+  $("#transcriptCopy").textContent =
+    `“${question}”`;
+
+  $("#transcriptTime").textContent =
+    "Just now";
+
+  $("#liveStateText").textContent =
+    "Preparing answer";
 
   await requestCoach(question, true);
 
   if (sessionTimer) {
-    $("#liveStateText").textContent = "Listening";
+    $("#liveStateText").textContent =
+      "Listening";
   }
 }
 
 function mergeTranscripts(parts) {
   const cleanParts =
-    parts.map(part => part.trim()).filter(Boolean);
+    parts
+      .map(part => part.trim())
+      .filter(Boolean);
 
   if (!cleanParts.length) return "";
 
@@ -945,14 +1068,18 @@ function mergeTranscripts(parts) {
   ) {
     const next = cleanParts[index];
 
-    const previousWords = merged.split(/\s+/);
-    const nextWords = next.split(/\s+/);
+    const previousWords =
+      merged.split(/\s+/);
 
-    const maxOverlap = Math.min(
-      16,
-      previousWords.length,
-      nextWords.length
-    );
+    const nextWords =
+      next.split(/\s+/);
+
+    const maxOverlap =
+      Math.min(
+        16,
+        previousWords.length,
+        nextWords.length
+      );
 
     let overlap = 0;
 
@@ -961,15 +1088,17 @@ function mergeTranscripts(parts) {
       size >= 2;
       size -= 1
     ) {
-      const tail = previousWords
-        .slice(-size)
-        .map(normalizeWord)
-        .join(" ");
+      const tail =
+        previousWords
+          .slice(-size)
+          .map(normalizeWord)
+          .join(" ");
 
-      const head = nextWords
-        .slice(0, size)
-        .map(normalizeWord)
-        .join(" ");
+      const head =
+        nextWords
+          .slice(0, size)
+          .map(normalizeWord)
+          .join(" ");
 
       if (tail === head) {
         overlap = size;
@@ -978,7 +1107,9 @@ function mergeTranscripts(parts) {
     }
 
     merged =
-      `${merged} ${nextWords.slice(overlap).join(" ")}`
+      `${merged} ${nextWords
+        .slice(overlap)
+        .join(" ")}`
         .trim();
   }
 
@@ -1012,7 +1143,8 @@ function isUsefulTranscript(transcript) {
       Math.max(...Object.values(counts));
 
     const uniqueRatio =
-      Object.keys(counts).length / words.length;
+      Object.keys(counts).length /
+      words.length;
 
     if (
       mostRepeated / words.length > 0.55 ||
@@ -1027,7 +1159,9 @@ function isUsefulTranscript(transcript) {
 
 function encodeWav(samples, sampleRate) {
   const buffer =
-    new ArrayBuffer(44 + samples.length * 2);
+    new ArrayBuffer(
+      44 + samples.length * 2
+    );
 
   const view = new DataView(buffer);
 
@@ -1079,7 +1213,10 @@ function encodeWav(samples, sampleRate) {
     index += 1
   ) {
     const sample =
-      Math.max(-1, Math.min(1, samples[index]));
+      Math.max(
+        -1,
+        Math.min(1, samples[index])
+      );
 
     view.setInt16(
       offset,
@@ -1130,30 +1267,36 @@ async function requestCoach(
   utterance,
   forceQuestion
 ) {
-  const response = await fetch("/api/coach", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      utterance,
-      forceQuestion,
-      recentTranscript:
-        state.recentTranscript.slice(0, -1),
-      company: state.company,
-      role: state.role,
-      focus: state.focus,
-      intensity: state.intensity,
-      bulletCount: state.bulletCount,
-      briefing: state.briefing
-    })
-  });
+  const response = await fetch(
+    "/api/coach",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+      body: JSON.stringify({
+        utterance,
+        forceQuestion,
+        recentTranscript:
+          state.recentTranscript
+            .slice(0, -1),
+        company: state.company,
+        role: state.role,
+        focus: state.focus,
+        intensity: state.intensity,
+        bulletCount: state.bulletCount,
+        briefing: state.briefing
+      })
+    }
+  );
 
   const result = await response.json();
 
   if (!response.ok) {
     throw new Error(
-      result.error || "Coaching failed"
+      result.error ||
+      "Coaching failed"
     );
   }
 
@@ -1171,7 +1314,9 @@ function renderCoachResult(result) {
 
   $("#matchPill").textContent =
     `${Math.round(
-      result.match || result.confidence || 0
+      result.match ||
+      result.confidence ||
+      0
     )}% match`;
 
   $("#liveTitle").textContent =
@@ -1189,7 +1334,8 @@ function renderCoachResult(result) {
   $("#transcriptCopy").textContent =
     `“${result.question || lastUtterance}”`;
 
-  $("#transcriptTime").textContent = "Just now";
+  $("#transcriptTime").textContent =
+    "Just now";
 
   $("#supportingDetail").textContent =
     result.detail || "";
@@ -1209,12 +1355,15 @@ function renderCoachResult(result) {
     question:
       result.question || lastUtterance,
     lead:
-      result.lead || "Relevant experience",
+      result.lead ||
+      "Relevant experience",
     profile:
       result.profile || "Blended",
     match:
       Math.round(
-        result.match || result.confidence || 0
+        result.match ||
+        result.confidence ||
+        0
       ),
     bullets,
     detail: result.detail || "",
@@ -1236,7 +1385,8 @@ function renderLiveArchive() {
   const previousAnswers =
     (state.history || []).slice(1);
 
-  archive.hidden = !previousAnswers.length;
+  archive.hidden =
+    !previousAnswers.length;
 
   archive.innerHTML =
     previousAnswers
@@ -1253,20 +1403,25 @@ function renderLiveArchive() {
 
             <h2>
               ${escapeHtml(
-          item.lead || "Previous response"
+          item.lead ||
+          "Previous response"
         )}
             </h2>
 
             ${Array.isArray(item.bullets) &&
             item.bullets.length
-            ? `<ul>${item.bullets
+            ? `
+                  <ul>
+                    ${item.bullets
               .map(
                 bullet =>
                   `<li>${escapeHtml(
                     bullet
                   )}</li>`
               )
-              .join("")}</ul>`
+              .join("")}
+                  </ul>
+                `
             : ""
           }
           </article>
@@ -1290,24 +1445,29 @@ function handleProcessingError(error) {
 }
 
 function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+  return new Promise(
+    (resolve, reject) => {
+      const reader = new FileReader();
 
-    reader.onload = () =>
-      resolve(
-        String(reader.result).split(",")[1] || ""
-      );
+      reader.onload = () => {
+        resolve(
+          String(reader.result)
+            .split(",")[1] || ""
+        );
+      };
 
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    }
+  );
 }
 
 function dismissAnswer() {
   $("#answerLabel").textContent =
     "Your reference";
 
-  $("#matchPill").textContent = "Listening";
+  $("#matchPill").textContent =
+    "Listening";
 
   $("#liveTitle").textContent =
     "Listening for the next question.";
@@ -1328,10 +1488,13 @@ function dismissAnswer() {
 function bindLive() {
   $("#toggleSession").addEventListener(
     "click",
-    () =>
-      sessionTimer
-        ? endSession()
-        : startSession()
+    () => {
+      if (sessionTimer) {
+        endSession();
+      } else {
+        startSession();
+      }
+    }
   );
 
   $("#answerNow").addEventListener(
@@ -1420,7 +1583,8 @@ async function checkApiStatus() {
       await fetch("/api/status");
 
     if (response.ok) {
-      apiStatus = await response.json();
+      apiStatus =
+        await response.json();
     }
   } catch {
     apiStatus = {
@@ -1464,8 +1628,8 @@ function renderHistory() {
     $("#topProfile").textContent =
       Object.entries(profiles)
         .sort(
-          (first, second) =>
-            second[1] - first[1]
+          (a, b) =>
+            b[1] - a[1]
         )[0][0];
   } else {
     $("#topProfile").textContent = "—";
@@ -1477,8 +1641,8 @@ function renderHistory() {
         <span class="empty-mark">?</span>
         <h2>No questions yet</h2>
         <p>
-          Your saved questions and reference
-          points will appear here.
+          Your saved questions and reference points
+          will appear here.
         </p>
         <button
           class="secondary-button"
@@ -1506,10 +1670,13 @@ function renderHistory() {
         const time =
           new Date(
             item.timestamp
-          ).toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit"
-          });
+          ).toLocaleTimeString(
+            [],
+            {
+              hour: "numeric",
+              minute: "2-digit"
+            }
+          );
 
         return `
           <article class="history-item">
@@ -1557,6 +1724,7 @@ function setupInstallPrompt() {
     "beforeinstallprompt",
     event => {
       event.preventDefault();
+
       installPrompt = event;
       $("#installButton").hidden = false;
     }
@@ -1580,10 +1748,11 @@ function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     window.addEventListener(
       "load",
-      () =>
+      () => {
         navigator.serviceWorker.register(
           "/service-worker.js"
-        )
+        );
+      }
     );
   }
 }
