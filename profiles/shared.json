@@ -1,0 +1,41 @@
+{
+  "candidate": {
+    "name": "Adam Steele",
+    "headline": "Senior Software Engineer",
+    "experienceYears": "8+",
+    "location": "New Jersey",
+    "education": "Master of Science in Urban Policy, Research Methods concentration, Hunter College"
+  },
+  "positioning": [
+    "Senior engineer who combines product delivery, applied data systems, and production ownership.",
+    "Experienced translating operational needs from founders, researchers, government leadership, and nontechnical stakeholders into working software.",
+    "Strongest differentiator is the ability to connect data-intensive or AI functionality to reliable user-facing products."
+  ],
+  "coreSkills": [
+    "TypeScript",
+    "JavaScript",
+    "Python",
+    "SQL",
+    "Node.js",
+    "React",
+    "Next.js",
+    "React Native",
+    "PostgreSQL",
+    "MySQL",
+    "Docker",
+    "Vercel",
+    "Azure",
+    "GitHub Actions",
+    "ArcGIS",
+    "Leaflet",
+    "REST APIs",
+    "WebSockets"
+  ],
+  "scale": [
+    "Messaging platform serving more than 30,000 founders and investors.",
+    "VoIP administration portal managing more than 10,000 active lines.",
+    "Government data systems covering 335 developments, more than 2,500 buildings, and 177,000 housing units.",
+    "Housing and Census data products covering more than 1 million rent-stabilized units.",
+    "NYCHAStat accountability dashboards used in meetings with more than 100 attendees and senior agency leadership."
+  ]
+}

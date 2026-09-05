@@ -1,0 +1,14 @@
+{
+  "name": "interview-reference",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check dist/app.js && node --check dist/speaker.js && node --check dist/service-worker.js && node --check api/prepare.js && node --check api/transcribe.js && node --check api/coach.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <meta name="description" content="Live, experience-aware interview reference prompts." />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>Interview Reference</title>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" type="button" data-route="home" aria-label="Go home">
+        <span class="brand-mark" aria-hidden="true">
+          A
+        </span>
+        <span>Reference</span>
+      </button>
+
+      <div class="topbar-actions">
+        <span class="save-state">
+          <span class="status-dot"></span>
+          Saved locally
+        </span>
+
+        <button class="icon-button" id="installButton" type="button" hidden>
+          Install
+        </button>
+      </div>
+    </header>
+
+    <aside class="side-nav" aria-label="Main navigation">
+      <button class="nav-item active" type="button" data-route="home">
+        <span>01</span>
+        Home
+      </button>
+
+      <button class="nav-item" type="button" data-route="setup">
+        <span>02</span>
+        Setup
+      </button>
+
+      <button class="nav-item" type="button" data-route="audio">
+        <span>03</span>
+        Audio check
+      </button>
+
+      <button class="nav-item" type="button" data-route="live">
+        <span>04</span>
+        Live
+      </button>
+
+      <button class="nav-item" type="button" data-route="history">
+        <span>05</span>
+        History
+      </button>
+
+      <div class="side-note">
+        <span class="eyebrow">Current mode</span>
+        <strong>Mock responses</strong>
+        <p>API connections come next.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="screen active" data-screen="home" aria-labelledby="homeTitle">
+        <div class="screen-heading home-heading">
+          <div>
+            <span class="eyebrow">
+              Interview workspace
+            </span>
+
+            <h1 id="homeTitle">
+              Be ready for the next question.
+            </h1>
+
+            <p class="lede">
+              Set the role once. Get concise,
+              experience-backed prompts while you answer
+              naturally.
+            </p>
+          </div>
+
+          <button class="primary-button" type="button" data-route="setup">
+            New interview
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="home-grid">
+          <article class="resume-card">
+            <div class="card-topline">
+              <span class="eyebrow">
+                Experience source
+              </span>
+
+              <span class="pill success">
+                Ready
+              </span>
+            </div>
+
+            <h2>Adam Steele</h2>
+
+            <p>
+              Senior software engineer with experience
+              spanning production applications, applied
+              data systems, and platform delivery.
+            </p>
+
+            <div class="profile-stack" aria-label="Available professional profiles">
+              <div>
+                <span class="profile-icon blue">
+                  SE
+                </span>
+
+                <span>
+                  <strong>
+                    Software Engineering
+                  </strong>
+                  <small>
+                    Product, architecture, delivery
+                  </small>
+                </span>
+
+                <span>16</span>
+              </div>
+
+              <div>
+                <span class="profile-icon violet">
+                  AI
+                </span>
+
+                <span>
+                  <strong>
+                    AI &amp; Data
+                  </strong>
+                  <small>
+                    Pipelines, modeling, analysis
+                  </small>
+                </span>
+
+                <span>12</span>
+              </div>
+
+              <div>
+                <span class="profile-icon aqua">
+                  DO
+                </span>
+
+                <span>
+                  <strong>
+                    DevOps &amp; Platform
+                  </strong>
+                  <small>
+                    Deployment, reliability, scale
+                  </small>
+                </span>
+
+                <span>9</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="readiness-card">
+            <div class="card-topline">
+              <span class="eyebrow">
+                Readiness
+              </span>
+
+              <span class="score">72%</span>
+            </div>
+
+            <div class="readiness-ring" aria-label="Setup is 72 percent complete">
+              <span>
+                3
+                <small>of 4</small>
+              </span>
+            </div>
+
+            <ul class="check-list">
+              <li class="done">
+                Experience profile
+              </li>
+              <li class="done">
+                Response style
+              </li>
+              <li class="done">
+                PWA enabled
+              </li>
+              <li>Target role</li>
+            </ul>
+
+            <button class="secondary-button full" type="button" data-route="setup">
+              Complete setup
+            </button>
+          </article>
+        </div>
+
+        <section class="recent-block">
+          <div class="section-title-row">
+            <div>
+              <span class="eyebrow">
+                Recent workspace
+              </span>
+              <h2>Continue where you left off</h2>
+            </div>
+
+            <button class="text-button" type="button" data-route="history">
+              View history
+            </button>
+          </div>
+
+          <button class="recent-session" id="resumeSession" type="button" data-route="setup">
+            <span class="company-monogram">
+              ML
+            </span>
+
+            <span>
+              <strong id="recentRole">
+                Machine Learning Engineer
+              </strong>
+              <small id="recentCompany">
+                Sample role · Draft
+              </small>
+            </span>
+
+            <span class="recent-arrow">→</span>
+          </button>
+        </section>
+      </section>
+
+      <section class="screen" data-screen="setup" aria-labelledby="setupTitle">
+        <div class="screen-heading compact-heading">
+          <div>
+            <span class="eyebrow">
+              Step 1 of 3
+            </span>
+            <h1 id="setupTitle">
+              Prepare the role
+            </h1>
+            <p class="lede">
+              This context determines which experience
+              the coach surfaces.
+            </p>
+          </div>
+        </div>
+
+        <form class="form-card" id="setupForm">
+          <div class="field-row">
+            <label class="field">
+              <span>Company</span>
+              <input id="companyInput" name="company" placeholder="Company name" autocomplete="organization" />
+            </label>
+
+            <label class="field">
+              <span>Position</span>
+              <input id="roleInput" name="role" placeholder="e.g. ML Platform Engineer" required />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Job description</span>
+
+            <textarea id="jobDescriptionInput" name="jobDescription" rows="7"
+              placeholder="Paste the complete job description here..."></textarea>
+
+            <small>
+              The role briefing will be prepared before
+              listening begins.
+            </small>
+          </label>
+
+          <fieldset class="field-group">
+            <legend>Primary emphasis</legend>
+
+            <div class="choice-grid" id="focusChoices">
+              <label>
+                <input type="radio" name="focus" value="automatic" checked />
+                <span>
+                  <strong>Automatic</strong>
+                  <small>
+                    Blend profiles for each question
+                  </small>
+                </span>
+              </label>
+
+              <label>
+                <input type="radio" name="focus" value="software" />
+                <span>
+                  <strong>Software</strong>
+                  <small>
+                    Architecture and product delivery
+                  </small>
+                </span>
+              </label>
+
+              <label>
+                <input type="radio" name="focus" value="ai-data" />
+                <span>
+                  <strong>AI &amp; Data</strong>
+                  <small>
+                    Pipelines, models, analysis
+                  </small>
+                </span>
+              </label>
+
+              <label>
+                <input type="radio" name="focus" value="devops" />
+                <span>
+                  <strong>DevOps</strong>
+                  <small>
+                    Platform, reliability, deployment
+                  </small>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="preference-grid">
+            <label class="field">
+              <span>Framing</span>
+
+              <select id="intensityInput" name="intensity">
+                <option value="strong">
+                  Strong and inventive
+                </option>
+                <option value="balanced">
+                  Balanced
+                </option>
+                <option value="conservative">
+                  Conservative
+                </option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Reference length</span>
+
+              <select id="bulletCountInput" name="bulletCount">
+                <option value="4">4 bullets</option>
+                <option value="5" selected>
+                  5 bullets
+                </option>
+                <option value="6">6 bullets</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="secondary-button" type="button" data-route="home">
+              Back
+            </button>
+
+            <button class="primary-button" type="submit">
+              Save and check audio
+              <span>→</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="screen" data-screen="audio" aria-labelledby="audioTitle">
+        <div class="screen-heading compact-heading">
+          <div>
+            <span class="eyebrow">
+              Step 2 of 3
+            </span>
+            <h1 id="audioTitle">
+              Check the room
+            </h1>
+            <p class="lede">
+              Place your phone near the computer speaker
+              and test both voices.
+            </p>
+          </div>
+        </div>
+
+        <div class="audio-layout">
+          <article class="audio-card">
+            <div class="mic-orbit" id="micOrbit">
+              <span class="mic-symbol" aria-hidden="true"></span>
+              <span class="orbit-ring one"></span>
+              <span class="orbit-ring two"></span>
+            </div>
+
+            <h2 id="micStatus">
+              Microphone is off
+            </h2>
+
+            <p id="micHelp">
+              Check the microphone, then enroll your
+              voice so the app can ignore you.
+            </p>
+
+            <div class="meter" aria-label="Microphone input level">
+              <span id="meterFill"></span>
+            </div>
+
+            <div class="meter-labels">
+              <span>Quiet</span>
+              <span>Clear range</span>
+              <span>Loud</span>
+            </div>
+
+            <button class="primary-button wide" id="micButton" type="button">
+              Start microphone check
+            </button>
+
+            <section class="enrollment-box" aria-labelledby="enrollmentTitle">
+              <div class="enrollment-heading">
+                <div>
+                  <span class="eyebrow">
+                    Required voice separation
+                  </span>
+                  <h3 id="enrollmentTitle">
+                    Enroll your voice
+                  </h3>
+                </div>
+
+                <span class="pill" id="enrollmentBadge">
+                  Not enrolled
+                </span>
+              </div>
+
+              <p id="enrollmentHelp">
+                Read naturally for about 30 seconds. The
+                free, open-source model runs locally and
+                your voiceprint stays on this device.
+              </p>
+
+              <div id="picovoiceKeyField" style="display: none">
+                <input id="picovoiceKey" type="hidden" />
+              </div>
+
+              <div class="enrollment-prompt" id="enrollmentPrompt">
+                When prompted, describe a project you are
+                proud of in your normal interview voice.
+              </div>
+
+              <div class="enrollment-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                aria-valuenow="0" id="enrollmentProgress">
+                <span></span>
+              </div>
+
+              <div class="enrollment-actions">
+                <button class="secondary-button" id="enrollVoice" type="button">
+                  Start voice enrollment
+                </button>
+
+                <button class="secondary-button" id="testVoice" type="button" hidden>
+                  Test one voice
+                </button>
+
+                <button class="text-button danger-text" id="resetVoice" type="button" hidden>
+                  Reset voiceprint
+                </button>
+              </div>
+            </section>
+          </article>
+
+          <aside class="check-panel">
+            <span class="eyebrow">
+              Before you begin
+            </span>
+
+            <h2>Three quick checks</h2>
+
+            <ul class="numbered-list">
+              <li>
+                <span>1</span>
+                <div>
+                  <strong>Computer speaker</strong>
+                  <p>
+                    Use speakers, not headphones, at a
+                    comfortable volume.
+                  </p>
+                </div>
+              </li>
+
+              <li>
+                <span>2</span>
+                <div>
+                  <strong>Phone position</strong>
+                  <p>
+                    Place the phone below the webcam and
+                    closer to the speaker.
+                  </p>
+                </div>
+              </li>
+
+              <li>
+                <span>3</span>
+                <div>
+                  <strong>Screen awake</strong>
+                  <p>
+                    Keep this app open and the phone
+                    connected to power.
+                  </p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="permission-row">
+              <span>Microphone permission</span>
+              <strong id="permissionStatus">
+                Not checked
+              </strong>
+            </div>
+
+            <div class="permission-row">
+              <span>Voice separation</span>
+              <strong id="speakerStatus">
+                Required
+              </strong>
+            </div>
+
+            <div class="form-actions stacked">
+              <button class="secondary-button" type="button" data-route="setup">
+                Back
+              </button>
+
+              <button class="primary-button" id="continueLive" type="button" disabled>
+                Continue to live mode
+              </button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen live-screen" data-screen="live" aria-labelledby="liveTitle">
+        <div class="live-topline">
+          <div class="live-state">
+            <span class="listening-pulse"></span>
+
+            <span>
+              <strong id="liveStateText">
+                Ready
+              </strong>
+              <small id="liveContext">
+                No role selected
+              </small>
+            </span>
+          </div>
+
+          <div class="session-clock" id="sessionClock">
+            00:00
+          </div>
+
+          <button class="stop-button" id="toggleSession" type="button">
+            Start session
+          </button>
+        </div>
+
+        <div class="live-workspace">
+          <article class="answer-panel" aria-live="polite">
+            <div class="answer-meta">
+              <span class="eyebrow" id="answerLabel">
+                Reference
+              </span>
+
+              <span class="match-pill" id="matchPill">
+                Mock mode
+              </span>
+            </div>
+
+            <h1 id="liveTitle">
+              Ready when you are.
+            </h1>
+
+            <ul class="answer-bullets" id="answerBullets">
+              <li>
+                Start the session, then use “Answer this”
+                to simulate a detected interviewer
+                question.
+              </li>
+              <li>
+                Your strongest matching experience will
+                appear here in large, glanceable points.
+              </li>
+            </ul>
+
+            <button class="detail-toggle" id="detailToggle" type="button" aria-expanded="false">
+              Show supporting detail
+            </button>
+
+            <div class="supporting-detail" id="supportingDetail" hidden></div>
+          </article>
+
+          <aside class="transcript-panel">
+            <div class="transcript-heading">
+              <span class="eyebrow">
+                What I heard
+              </span>
+              <span id="transcriptTime">
+                Waiting
+              </span>
+            </div>
+
+            <p class="transcript-copy" id="transcriptCopy">
+              The latest detected question will appear
+              here.
+            </p>
+
+            <div class="signal-row">
+              <span>Input signal</span>
+
+              <div class="mini-wave" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+            </div>
+
+            <div class="live-actions">
+              <button class="primary-button answer-now" id="answerNow" type="button">
+                Answer this
+              </button>
+
+              <button class="secondary-button" id="dismissAnswer" type="button">
+                Dismiss
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <div class="live-footer">
+          <span>
+            <kbd>A</kbd>
+            Generate reference
+          </span>
+
+          <span>
+            <kbd>D</kbd>
+            Dismiss
+          </span>
+
+          <button class="text-button" type="button" data-route="history">
+            End and review
+          </button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="history" aria-labelledby="historyTitle">
+        <div class="screen-heading history-heading">
+          <div>
+            <span class="eyebrow">
+              Session review
+            </span>
+            <h1 id="historyTitle">
+              Question history
+            </h1>
+            <p class="lede">
+              Review what was surfaced and strengthen
+              your profiles over time.
+            </p>
+          </div>
+
+          <button class="primary-button" type="button" data-route="setup">
+            New interview
+          </button>
+        </div>
+
+        <div class="history-summary">
+          <div>
+            <span>Questions</span>
+            <strong id="questionCount">0</strong>
+          </div>
+
+          <div>
+            <span>Average match</span>
+            <strong id="averageMatch">—</strong>
+          </div>
+
+          <div>
+            <span>Top profile</span>
+            <strong id="topProfile">—</strong>
+          </div>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <div class="empty-state">
+            <span class="empty-mark">?</span>
+            <h2>No questions yet</h2>
+            <p>
+              Run a mock question from the live screen and
+              it will be saved here.
+            </p>
+            <button class="secondary-button" type="button" data-route="live">
+              Open live mode
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Mobile navigation">
+      <button class="active" type="button" data-route="home">
+        <span>⌂</span>
+        Home
+      </button>
+
+      <button type="button" data-route="setup">
+        <span>＋</span>
+        Setup
+      </button>
+
+      <button type type="button" data-route="live">
+        <span>◉</span>
+        Live
+      </button>
+
+      <button type="button" data-route="history">
+        <span>≡</span>
+        History
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.min.js" defer
+    crossorigin="anonymous"></script>
+  <script src="/speaker.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+Eagle Web SDK
+Copyright 2023-2026 Picovoice Inc.
+Licensed under the Apache License, Version 2.0.
+https://www.apache.org/licenses/LICENSE-2.0
+
+The Eagle model and runtime require a valid Picovoice AccessKey and remain
+subject to Picovoice's applicable SDK terms.

@@ -1,0 +1,76 @@
+{
+  "profile": "Software Engineering",
+  "summary": "Senior full-stack and product engineer with end-to-end ownership across web, mobile, real-time, data-intensive, and internal operational applications.",
+  "experiences": [
+    {
+      "id": "messaging-platform",
+      "organization": "Steele Web Solutions client",
+      "facts": [
+        "Built a real-time messaging platform serving more than 30,000 founders and investors.",
+        "Implemented group chat, SQL-backed workflows, and automated moderation using Alpine.js and Bootstrap.",
+        "Worked within an established production application and active user community."
+      ],
+      "framing": [
+        "Emphasize ownership of production behavior, data flows, real-time interaction, moderation, and safe iteration at scale.",
+        "Use for WebSockets, performance, data consistency, community safety, and production troubleshooting questions."
+      ]
+    },
+    {
+      "id": "voip-portal",
+      "organization": "Regional VoIP provider",
+      "facts": [
+        "Modernized more than 50 administrative views in an internal client portal.",
+        "The portal managed more than 10,000 active lines.",
+        "Partnered directly with the CTO and design team while working within an operational telecommunications system."
+      ],
+      "framing": [
+        "Use for legacy modernization, frontend architecture, stakeholder collaboration, staged migrations, and complex administrative workflows."
+      ]
+    },
+    {
+      "id": "student-wellbeing",
+      "organization": "University of Zurich research collaboration",
+      "facts": [
+        "Developed core React Native features for a student mental wellbeing application.",
+        "Implemented AI-integrated journaling, mood tracking, and peer-support group chat.",
+        "Integrated OpenAI-supported sentiment and high-risk content detection into the product workflow."
+      ],
+      "framing": [
+        "Use for React Native, responsible AI integration, sensitive user data, human-centered product decisions, and cross-functional research collaboration."
+      ]
+    },
+    {
+      "id": "geospatial-social",
+      "organization": "Steele Web Solutions client",
+      "facts": [
+        "Developed and launched a full-stack geospatial social application using MySQL, Leaflet, and ArcGIS.",
+        "Built location-anchored profile cards, nearby discovery, social links, and supporting backend data flows."
+      ],
+      "framing": [
+        "Use for full-stack architecture, geospatial queries, privacy tradeoffs, database design, and shipping a product from concept to production."
+      ]
+    },
+    {
+      "id": "commerce-platforms",
+      "organization": "Steele Web Solutions clients",
+      "facts": [
+        "Developed and deployed production web platforms replacing manual workflows with booking, subscriptions, gated content, and specialized storefronts.",
+        "Integrated Stripe subscriptions, payment webhooks, authentication, and third-party services across multiple client applications."
+      ],
+      "framing": [
+        "Use for API integrations, payments, idempotency, webhooks, ownership, and translating business operations into software."
+      ]
+    },
+    {
+      "id": "nycha-compliance",
+      "organization": "New York City Housing Authority",
+      "facts": [
+        "Led discovery, data modeling, and schema design for NYCHA's first HUD compliance tool.",
+        "Unified digitized print materials and system records into an ingestion workflow used by the agency president for federal certification."
+      ],
+      "framing": [
+        "Use for ambiguous requirements, regulated workflows, schema design, data provenance, and executive-facing systems."
+      ]
+    }
+  ]
+}

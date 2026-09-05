@@ -1,0 +1,76 @@
+{
+  "profile": "AI and Data",
+  "summary": "Applied AI and data engineer who has built production ingestion, transformation, feature, modeling, validation, and decision-support systems using Python, SQL, R, geospatial data, and OpenAI integrations.",
+  "experiences": [
+    {
+      "id": "hcr-feature-pipelines",
+      "organization": "NYS Homes and Community Renewal",
+      "facts": [
+        "Built ETL pipelines in Python and SQL integrating U.S. Census demographic and income data with internal housing records covering more than 1 million rent-stabilized units.",
+        "The resulting datasets powered agency dashboards, GIS tools, policy analysis, and modeling workflows."
+      ],
+      "strongFraming": [
+        "Describe these as feature pipelines when discussing ML because they transformed heterogeneous source data into standardized analytical variables used by downstream risk and trajectory models.",
+        "Emphasize entity alignment, geographic joins, normalization, data quality, and operational delivery."
+      ]
+    },
+    {
+      "id": "displacement-modeling",
+      "organization": "NYS Homes and Community Renewal",
+      "facts": [
+        "Developed a GIS tool modeling displacement risk and rent trajectories across more than 1 million stabilized units.",
+        "Combined rent changes, turnover, building filings, demographic indicators, and geographic context for statewide housing analysis."
+      ],
+      "strongFraming": [
+        "Use as applied risk modeling and longitudinal feature engineering.",
+        "Discuss the model as a decision-support model unless a question requires naming a specific statistical or ML algorithm."
+      ]
+    },
+    {
+      "id": "nycha-kpi-features",
+      "organization": "New York City Housing Authority",
+      "facts": [
+        "Standardized fragmented operational data across Access, VBA, SAS, SQL, R, and Python systems.",
+        "Covered lead, pest, mold, repairs, 2,500-plus buildings, and 177,000-plus units.",
+        "Produced KPIs used for executive accountability across 335 developments."
+      ],
+      "strongFraming": [
+        "Describe KPI construction as production feature engineering when appropriate: defining stable variables, reconciling source semantics, validating transformations, and monitoring operational outcomes.",
+        "Use for questions about noisy labels, data quality, feature definitions, evaluation criteria, and stakeholder validation."
+      ]
+    },
+    {
+      "id": "reporting-pipeline-rebuild",
+      "organization": "New York City Housing Authority",
+      "facts": [
+        "Reverse-engineered undocumented SAS and SQL reporting pipelines at risk of knowledge loss.",
+        "Reimplemented the logic in R and Python to improve reliability and maintainability."
+      ],
+      "strongFraming": [
+        "Use for reproducible analytical pipelines, model-adjacent production engineering, validation against legacy outputs, and technical-risk reduction."
+      ]
+    },
+    {
+      "id": "student-ai-safety",
+      "organization": "University of Zurich research collaboration",
+      "facts": [
+        "Integrated OpenAI-assisted journaling, sentiment interpretation, and high-risk content detection into a React Native mental wellbeing product.",
+        "Worked in a sensitive domain where model output needed to support rather than replace human care and peer-support workflows."
+      ],
+      "strongFraming": [
+        "Use for LLM integration, classification, safety thresholds, false-positive tradeoffs, responsible AI, and integrating model output into a product."
+      ]
+    },
+    {
+      "id": "analytical-training",
+      "organization": "Hunter College",
+      "facts": [
+        "Completed a Master of Science in Urban Policy with a concentration in Research Methods.",
+        "Applied quantitative and analytical methods professionally in large government data environments."
+      ],
+      "strongFraming": [
+        "Use to establish formal analytical grounding alongside production software experience."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "profile": "DevOps and Platform",
+  "summary": "Platform-oriented senior software engineer experienced deploying, operating, modernizing, and troubleshooting production applications, databases, integrations, and analytical pipelines.",
+  "experiences": [
+    {
+      "id": "production-delivery",
+      "organization": "Steele Web Solutions",
+      "facts": [
+        "Developed, deployed, and maintained production applications for startups and small businesses.",
+        "Worked with Vercel and Azure deployments, GitHub-based delivery workflows, Docker, environment configuration, domains, authentication, databases, and external services.",
+        "Maintained long-running client systems and acted as the technical point of contact for production changes and troubleshooting."
+      ],
+      "strongFraming": [
+        "Emphasize end-to-end operational ownership rather than limiting the story to feature development.",
+        "Use for deployment automation, environment separation, secrets, incident response, rollback planning, and production support."
+      ]
+    },
+    {
+      "id": "realtime-scale",
+      "organization": "Business acquisition platform",
+      "facts": [
+        "Supported a real-time messaging product serving more than 30,000 users.",
+        "Owned changes spanning application behavior, SQL-backed data flows, real-time communication, and automated moderation."
+      ],
+      "strongFraming": [
+        "Use for availability, scaling, database performance, safe releases, observability, and operational risk in an active community."
+      ]
+    },
+    {
+      "id": "voip-operations",
+      "organization": "Regional VoIP provider",
+      "facts": [
+        "Modernized an operational administration portal managing more than 10,000 active lines and more than 50 administrative views.",
+        "Worked directly with the CTO inside a system where changes affected ongoing telecommunications operations."
+      ],
+      "strongFraming": [
+        "Use for staged modernization, backwards compatibility, deployment risk, operational tooling, and working around legacy constraints."
+      ]
+    },
+    {
+      "id": "government-cloud-migration",
+      "organization": "New York City Housing Authority",
+      "facts": [
+        "Partnered with central IT during cloud migration of source data used by executive reporting systems.",
+        "Standardized dependencies on fragmented Access, VBA, SAS, and SQL workflows before or during migration."
+      ],
+      "strongFraming": [
+        "Use for migration planning, dependency discovery, data validation, legacy-system risk, and cross-team platform work."
+      ]
+    },
+    {
+      "id": "pipeline-reliability",
+      "organization": "New York City Housing Authority",
+      "facts": [
+        "Reverse-engineered undocumented reporting pipelines and rewrote their logic in maintainable R and Python workflows.",
+        "Reduced knowledge-loss risk and improved the reliability of recurring internal reporting."
+      ],
+      "strongFraming": [
+        "Use for automation, repeatability, runbook thinking, eliminating fragile manual dependencies, and reliability engineering for data systems."
+      ]
+    },
+    {
+      "id": "environment-practice",
+      "organization": "Production application work",
+      "facts": [
+        "Uses separate development and production environments so changes can be validated before release.",
+        "Has worked with database schema changes, migrations, GitHub Actions, Docker, Vercel deployments, and third-party service configuration."
+      ],
+      "strongFraming": [
+        "Use for CI/CD, release discipline, configuration management, migration safety, and reducing deployment risk."
+      ]
+    }
+  ]
+}
